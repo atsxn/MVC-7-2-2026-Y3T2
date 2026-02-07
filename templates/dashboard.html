@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>DASHBOARD // SYSTEM_MONITOR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h1>> SYSTEM_MONITOR</h1>
+            <div style="text-align:right;">
+                <div class="status-node" style="color: #32ff7e; font-size: 0.9em; margin-bottom: 5px;">
+                    USER: {{ user|upper }} <span style="color:#666;">//</span> ROLE: {{ role|upper }}
+                </div>
+                <a href="/logout" style="color:red; text-decoration:none; font-size:0.8em;">[ LOGOUT ]</a>
+            </div>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert-{{ 'success' if category == 'success' else 'error' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="panel">
+            <h3>[ LIVE_DATA_STREAM ]</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CLAIMANT (ผู้ขอ)</th>
+                        <th>TYPE (ประเภท)</th>
+                        <th>STATUS (สถานะ)</th>
+                        <th>PAYOUT (เงินเยียวยา)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for claim in claims %}
+                    <tr>
+                        <td>#{{ claim.claim_id }}</td>
+                        
+                        <td>
+                            {% set ns = namespace(found_name='Unknown') %}
+                            {% for person in claimants %}
+                                {% if person.claimant_id == claim.claimant_id %}
+                                    {% set ns.found_name = person.first_name ~ " " ~ person.last_name %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ ns.found_name }}
+                        </td>
+                        
+                        <td>
+                            {% set ns_type = namespace(found_type='-') %}
+                            {% for person in claimants %}
+                                {% if person.claimant_id == claim.claimant_id %}
+                                    {% set ns_type.found_type = person.type %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ ns_type.found_type }}
+                        </td>
+                        
+                        <td>
+                            <span class="
+                                {% if claim.status == 'APPROVED' %} status-approved
+                                {% elif claim.status == 'DENIED' %} status-denied
+                                {% else %} status-pending {% endif %}
+                            ">
+                                {{ claim.status }}
+                            </span>
+                            
+                            {% if claim.status == 'PENDING' and role == 'officer' %}
+                                <div style="margin-top: 5px;">
+                                    <form action="/approve/{{ claim.claim_id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-action btn-approve">✔ APPROVE</button>
+                                    </form>
+                                    <form action="/deny/{{ claim.claim_id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-action btn-deny">✖ DENY</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </td>
+                        
+                        <td>
+                            {% for comp in compensations %}
+                                {% if comp.claim_id == claim.claim_id %}
+                                    {% if claim.status == 'DENIED' %}
+                                        <span style="text-decoration: line-through; color: #666;">
+                                            {{ "{:,.2f}".format(comp.amount) }}
+                                        </span>
+                                    {% else %}
+                                        {{ "{:,.2f}".format(comp.amount) }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align:center; padding: 20px;">NO_DATA_AVAILABLE (ไม่มีข้อมูลในระบบ)</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel">
+             <h3>[ QUICK_ACTIONS ]</h3>
+                <a href="/submit"><button>+ CREATE_NEW_CLAIM</button></a>
+        </div>
+    </div>
+</body>
+</html>

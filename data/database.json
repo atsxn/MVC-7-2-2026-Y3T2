@@ -1,0 +1,34 @@
+{
+    "claimants": [
+        {
+            "claimant_id": "4486",
+            "first_name": "Arthittaya",
+            "last_name": "Duangtawan",
+            "monthly_income": 60000.0,
+            "type": "High Income"
+        }
+    ],
+    "claims": [
+        {
+            "claim_id": "74849894",
+            "claimant_id": "4486",
+            "submission_date": "2026-02-07",
+            "status": "APPROVED"
+        }
+    ],
+    "compensations": [
+        {
+            "claim_id": "74849894",
+            "amount": 12000.0,
+            "calculation_date": "2026-02-07"
+        }
+    ],
+    "policies": [
+        {
+            "policy_id": "P01",
+            "desc": "นโยบายเยียวยาฉุกเฉิน (Emergency Aid 2026)",
+            "max_cap": 20000,
+            "condition": "tiered_income"
+        }
+    ]
+}

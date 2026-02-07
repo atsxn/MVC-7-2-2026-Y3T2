@@ -1,0 +1,209 @@
+:root {
+    --bg-color: #0b0c0e;       /* พื้นหลังดำมืด */
+    --text-color: #32ff7e;     /* สีเขียวนีออนหลัก */
+    --text-yellow: #ffff00;    /* สีเหลือง */
+    --text-red: #ff3333;       /* สีแดง */
+    --border-color: #1a5e3a;   /* สีขอบเขียวเข้ม */
+    --panel-bg: rgba(0, 0, 0, 0.85);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Courier New', Courier, monospace; /* ฟอนต์สไตล์ Terminal */
+    margin: 0;
+    padding: 20px;
+    
+    /* สร้างลายตาราง Grid แบบ Dashboard */
+    background-image: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 4px 100%;
+}
+
+/* Layout */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* กล่อง Panel หลัก */
+.panel {
+    border: 1px solid var(--text-color);
+    padding: 25px;
+    margin-bottom: 20px;
+    background: var(--panel-bg);
+    box-shadow: 0 0 15px rgba(50, 255, 126, 0.15); /* แสงเรืองรองเบาๆ */
+    position: relative;
+}
+
+/* หัวข้อ */
+h1, h2, h3 {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px var(--text-color); /* เงาตัวอักษรนีออน */
+}
+
+/* ลิงก์ */
+a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+a:hover {
+    text-shadow: 0 0 10px var(--text-color);
+    text-decoration: underline;
+}
+
+/* --- FORM STYLES --- */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #aab;
+}
+
+input {
+    width: 100%;
+    background: #000;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 12px;
+    box-sizing: border-box;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: var(--text-color);
+    box-shadow: 0 0 15px var(--text-color); /* เรืองแสงเมื่อพิมพ์ */
+}
+
+/* ปุ่มกด (Buttons) */
+button, .btn {
+    background: var(--text-color);
+    color: #000; /* ตัวหนังสือสีดำบนพื้นเขียว */
+    border: none;
+    padding: 15px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    width: 100%;
+    margin-top: 20px;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+button:hover, .btn:hover {
+    background: #fff;
+    box-shadow: 0 0 25px var(--text-color);
+    transform: translateY(-2px);
+}
+
+/* ปุ่ม Action เล็กๆ (Approve/Deny) ในตาราง */
+.btn-action {
+    margin-top: 0 !important; /* ล้างค่า margin เดิม */
+    width: auto !important;
+    padding: 5px 10px !important;
+    font-size: 0.8em !important;
+    margin-left: 5px;
+}
+.btn-approve { background-color: var(--text-color); color: black; }
+.btn-deny { background-color: var(--text-red); color: white; }
+
+/* --- DASHBOARD TABLES --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--border-color);
+    color: #000;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tr:hover {
+    background-color: rgba(50, 255, 126, 0.1);
+}
+
+/* --- UTILITY CLASSES (Status Colors) --- */
+.status-approved {
+    color: var(--text-color);
+    font-weight: bold;
+    text-shadow: 0 0 8px var(--text-color);
+}
+
+.status-pending {
+    color: var(--text-yellow);
+    font-weight: bold;
+    text-shadow: 0 0 8px var(--text-yellow);
+}
+
+.status-denied {
+    color: var(--text-red);
+    font-weight: bold;
+    text-shadow: 0 0 8px var(--text-red);
+    text-decoration: line-through; /* ขีดฆ่า */
+}
+
+/* --- ALERT BOXES (Flash Messages) --- */
+/* กล่อง Error (สีแดง) */
+.alert-error {
+    border: 2px solid var(--text-red);
+    color: var(--text-red);
+    background: rgba(255, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px var(--text-red);
+    animation: blink-alert 1.5s infinite alternate;
+}
+.alert-error::before { content: ">> SYSTEM_ERROR: "; } /* คำนำหน้าอัตโนมัติ */
+
+/* กล่อง Success (สีเหลือง - ตามที่ขอ) */
+.alert-success {
+    border: 2px solid var(--text-yellow);
+    color: var(--text-yellow);
+    background: rgba(255, 255, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px var(--text-yellow);
+}
+.alert-success::before { content: ">> SYSTEM_SUCCESS: "; } /* คำนำหน้าอัตโนมัติ */
+
+@keyframes blink-alert {
+    from { opacity: 1; box-shadow: 0 0 5px var(--text-red); }
+    to { opacity: 0.7; box-shadow: 0 0 20px var(--text-red); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container { padding: 5px; }
+    .panel { padding: 15px; }
+    table, thead, tbody, th, td, tr { 
+        display: block; 
+    }
+}
